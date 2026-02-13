@@ -69,7 +69,9 @@
   </style>
 </head>
 <body>
-
+  <audio autoplay loop>
+    <source src="./assets/img/music.mp3" type="audio/mpeg">
+  </audio>
   <!-- Glittering Hearts Canvas -->
   <canvas id="glitter"></canvas>
 
@@ -168,6 +170,7 @@
     // ====================
     //  Configurable Answer
     // ====================
+    
     const CONFIG = {
       correctDate: "07022021", // DDMMYYYY
       mapURL: "https://www.google.com/maps/place/Talisay+Tower+Garden+Restaurant/@10.2628068,123.7543238,16848m/data=!3m1!1e3!4m10!1m2!2m1!1slawaas+garden+tower!3m6!1s0x33a99d639aff3109:0x30af474b17d89c6d!8m2!3d10.2628068!4d123.8264216!15sChNsYXdhYXMgZ2FyZGVuIHRvd2VyWhUiE2xhd2FhcyBnYXJkZW4gdG93ZXKSARNmaWxpcGlub19yZXN0YXVyYW50mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ0d1VVMVZWbWxrTUU1clZERldORlpWV1RCU1ZFWlZZVEo0U2xreVl4QULgAQD6AQQIABA0!16s%2Fg%2F11y8lrcc_r?entry=ttu&g_ep=EgoyMDI2MDIxMC4wIKXMDSoASAFQAw%3D%3D"
@@ -227,10 +230,14 @@
   if (userInput === CONFIG.correctDate) {
     verificationModal.classList.add("hidden");
     proposalModal.classList.remove("hidden");
+    const bgMusic = document.getElementById("bgMusic");
+    bgMusic.play().catch(() => {});
   } else {
     failedverificationModal.classList.remove("hidden");
     boxes.forEach(box => box.value = "");
     boxes[0].focus();
+    const bgMusic = document.getElementById("bgMusic");
+    bgMusic.play().catch(() => {});
   }
 });
 
