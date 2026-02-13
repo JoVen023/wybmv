@@ -167,6 +167,13 @@
   </div>
 
   <script>
+    window.addEventListener("DOMContentLoaded", () => {
+  const bgMusic = document.createElement("audio");
+  bgMusic.src = "./assets/img/music.mp3";
+  bgMusic.loop = true;
+  bgMusic.autoplay = true;
+  document.body.appendChild(bgMusic);
+});
     // ====================
     //  Configurable Answer
     // ====================
