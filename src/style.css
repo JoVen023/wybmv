@@ -1,0 +1,162 @@
+/* ==============================
+   1. CSS Reset & Base
+================================ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+	padding: 0;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    font-family:'Poppins', sans-serif;
+    background-color: #000;
+  }
+  
+ 
+  
+  /* ==============================
+     2. Modal Overlay
+  ================================ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+ 
+  
+  .date-box:focus {
+    border-color: #ec4899;
+    box-shadow: 0 0 0 3px rgba(236,72,153,0.2);
+  }
+  
+  /* ==============================
+     3. Modal Box
+  ================================ */
+  .modal {
+    background: white;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    animation: scaleIn 0.3s ease;
+  }
+  
+  /* ==============================
+     4. Buttons
+  ================================ */
+  .btn-primary {
+    background-color: #ca256a;
+    color: #ffffff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+height: 45px;
+    font-weight: 600;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #9d174d;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
+  }
+  
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+  
+  /* ==============================
+     5. Inputs
+  ================================ */
+  .input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    border: 1px solid #000000;
+    font-size: 1rem;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: #000000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15);
+  }
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  @keyframes blink {
+    50% { border-color: transparent; }
+  }
+  
+  .typing-text {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid white; /* blinking cursor */
+    animation: blink 0.7s step-end infinite;
+  }
+  
+  /* Optional: Tailwind-friendly overrides */
+  .btn-primary .typing-text {
+    font-weight: 600;
+  }
+  
+  /* ==============================
+     6. Animations
+  ================================ */
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  
+  /* ==============================
+     7. Utility Helpers
+  ================================ */
+  .hidden {
+    display: none;
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.4s ease forwards;
+  }
+  
+  /* ==============================
+     8. Tablet & Up
+  ================================ */
+  @media (min-width: 640px) {
+    .modal {
+      padding: 2rem;
+    }
+  }
+  
+  /* ==============================
+     9. Desktop & Up
+  ================================ */
+  @media (min-width: 1024px) {
+    .modal {
+      max-width: 480px;
+    }
+  }
+  

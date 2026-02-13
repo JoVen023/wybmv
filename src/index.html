@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💖 Valentine Surprise</title>
+  <link href="./output.css" rel="stylesheet">
+  <link href="./style.css" rel="stylesheet">
+  
+  <style>
+    /* ====================
+       Background & Overlay
+    ==================== */
+    #glitter {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+ 
+ 
+    @keyframes scaleIn {
+      from {opacity:0; transform: scale(0.9);}
+      to {opacity:1; transform: scale(1);}
+    }
+
+    /* ====================
+       Buttons
+    ==================== */
+    .btn-primary {
+      background-color: #ec4899;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(236,72,153,0.3);
+    }
+    .btn-primary:active { transform: scale(0.97); }
+
+    /* ====================
+       Date Box Input
+    ==================== */
+    .date-box {
+      width: 1.8rem;
+      height: 2.5rem;
+      border: 1px solid #000000;
+      border-radius: 0.25rem;
+      font-size: .8rem;
+      font-weight: bold;
+      outline: none;
+    }
+
+    .date-box:focus {
+      border-color: #000000;
+      box-shadow: 0 0 0 3px rgba(236,72,153,0.2);
+    }
+
+    label { font-size: 0.8rem; font-weight: 500; color: #000000; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Glittering Hearts Canvas -->
+  <canvas id="glitter"></canvas>
+
+  <!-- 1️⃣ Verification Modal -->
+  <div id="verificationModal" class="modal-overlay">
+    <div class="modal">
+      <div class="flex flex-col items-center">
+        <img src="/assets/img/D.svg" alt="Please"class="w-18 h-16 ">
+      </div>
+      <h2 class="text-2xl font-bold text-pink-600 ">When does our love start?</h2>
+      <br>
+      <div class="flex justify-center gap-1">
+        <!-- Day -->
+        <div class="flex flex-col items-center">
+          <div class="flex gap-1">
+            <input class="date-box text-center" maxlength="1" type="text" placeholder="D">
+            <input class="date-box text-center" maxlength="1" type="text" placeholder="D">
+          
+          </div>
+        </div>
+        <div class="flex items-center mt-1">
+          <span class="text-2xl font-bold text-dark-600 select-none translate-y-[2px]">-</span>
+        </div>
+      
+        <!-- Month -->
+        <div class="flex flex-col items-center">
+          <div class="flex gap-1">
+            <input class="date-box text-center" maxlength="1" type="text" placeholder="M">
+            <input class="date-box text-center" maxlength="1" type="text" placeholder="M">
+          </div>
+        </div>
+        <div class="flex items-center mt-1">
+          <span class="text-2xl font-bold text-dark-600 select-none translate-y-[2px]">-</span>
+        </div>
+      
+        <!-- Year -->
+        <div class="flex flex-col items-center">
+          <div class="flex gap-1">
+            <input class="date-box text-center" maxlength="1" type="text" placeholder="Y">
+            <input class="date-box text-center" maxlength="1" type="text" placeholder="Y">
+            <input class="date-box text-center" maxlength="1" type="text" placeholder="Y">
+            <input class="date-box text-center" maxlength="1" type="text" placeholder="Y">
+          </div>
+        </div>
+      </div>
+<br>
+<button id="verifyBtn" class="btn-primary w-full relative flex justify-center overflow-hidden">
+  <span class="typing-text"></span>
+</button>
+    </div>
+  </div>
+
+  <div id="failedverificationModal" class="modal-overlay hidden">
+    <div class="modal flex flex-col items-center">
+      <img src="/assets/img/unverified.svg" alt="Verification Failed" class="w-17 h-17 m-4">
+    
+      <p class="text-sm font-bold text-black-600 mx-4">Verification failed</p>
+      <p class="text-xm text-black-200/25 dark:text-dark-400/25 mx-4">You've inputted incorrect date.
+      </p>
+      <br>
+      <button id="trybtn" class="btn-primary w-full">Try Again</button>
+    </div>
+  </div>
+  
+
+
+  <!-- 2️⃣ Proposal Modal -->
+  <div id="proposalModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="flex flex-col items-center">
+      <img src="/assets/img/please.svg" alt="Please"class="w-18 h-16 ">
+      </div>
+      <br>
+      <h2 class="text-2xl font-bold text-pink-600 mb-4">💖 Will you be my Valentine?</h2>
+      <br>
+      <button id="yesBtn" class="btn-primary w-full">YES 💘</button>
+    </div>
+  </div>
+
+  <!-- 3️⃣ Success Modal -->
+  <div id="successModal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="flex flex-col items-center">
+        <img src="/assets/img/yey.svg" alt="Please"class="w-18 h-16 ">
+        </div>
+        <br>
+      <h2 class="text-2xl font-bold text-pink-600 mb-4">🎉 Yay! You Did It! 💕</h2>
+      <p class="mb-4"> Our love story is glowing brighter than ever! 🌹</p>
+      <p class="mb-4"> Click “Continue” to see where our special date awaits… 💌🌹</p>
+      <br>
+      <button id="continueBtn" class="btn-primary w-full">Continue</button>
+    </div>
+  </div>
+
+  <script>
+    // ====================
+    //  Configurable Answer
+    // ====================
+    const CONFIG = {
+      correctDate: "07022021", // DDMMYYYY
+      mapURL: "https://www.google.com/maps/place/Talisay+Tower+Garden+Restaurant/@10.2628068,123.7543238,16848m/data=!3m1!1e3!4m10!1m2!2m1!1slawaas+garden+tower!3m6!1s0x33a99d639aff3109:0x30af474b17d89c6d!8m2!3d10.2628068!4d123.8264216!15sChNsYXdhYXMgZ2FyZGVuIHRvd2VyWhUiE2xhd2FhcyBnYXJkZW4gdG93ZXKSARNmaWxpcGlub19yZXN0YXVyYW50mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDJ0d1VVMVZWbWxrTUU1clZERldORlpWV1RCU1ZFWlZZVEo0U2xreVl4QULgAQD6AQQIABA0!16s%2Fg%2F11y8lrcc_r?entry=ttu&g_ep=EgoyMDI2MDIxMC4wIKXMDSoASAFQAw%3D%3D"
+    };
+
+    // ====================
+    //  Numeric Date Input Logic
+    // ====================
+    const verifyBtn = document.getElementById("verifyBtn");
+    const tryagain = document.getElementById("trybtn");
+    const boxes = document.querySelectorAll("#verificationModal .date-box");
+    const verificationModal = document.getElementById("verificationModal");
+    const failedverificationModal = document.getElementById("failedverificationModal");
+    const proposalModal = document.getElementById("proposalModal");
+    const successModal = document.getElementById("successModal");
+    const yesBtn = document.getElementById("yesBtn");
+    const continueBtn = document.getElementById("continueBtn");
+    const heartImg = new Image();
+    heartImg.src = '/assets/img/h.png';
+    const flower = new Image();
+    flower.src = '/assets/img/cherry-blossom.png';
+
+    // Auto-move focus and allow only digits
+    boxes.forEach((box, idx) => {
+      box.addEventListener("input", () => {
+        box.value = box.value.replace(/\D/g, "");
+        if(box.value.length === 1 && idx < boxes.length - 1) boxes[idx + 1].focus();
+      });
+      box.addEventListener("keydown", (e) => {
+        if(e.key === "Backspace" && box.value === "" && idx > 0) boxes[idx - 1].focus();
+      });
+    });
+
+    boxes.forEach(box => {
+  box.classList.toggle("border-red-500", box.value === "");
+});
+
+ 
+    verifyBtn.addEventListener("click", () => {
+  let userInput = "";
+  let allFilled = true;
+
+  boxes.forEach(box => {
+    if (box.value.trim() === "") {
+      allFilled = false;
+    }
+    userInput += box.value;
+  });
+
+  if (!allFilled) {
+    failedverificationModal.classList.remove("hidden");
+    boxes.forEach(box => box.value = "");
+    boxes[0].focus();
+    return;
+  }
+
+  if (userInput === CONFIG.correctDate) {
+    verificationModal.classList.add("hidden");
+    proposalModal.classList.remove("hidden");
+  } else {
+    failedverificationModal.classList.remove("hidden");
+    boxes.forEach(box => box.value = "");
+    boxes[0].focus();
+  }
+});
+
+    tryagain.addEventListener("click",()=>{
+      verificationModal.classList.remove("hidden");
+      failedverificationModal.classList.add("hidden")
+
+    });
+
+    // Proposal Modal YES
+    yesBtn.addEventListener("click", () => {
+  proposalModal.classList.add("hidden");
+  successModal.classList.remove("hidden");
+
+  // Confetti hearts
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => createHeart(), i * 100);
+  }
+});
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.innerHTML = '';
+  heart.classList.add('absolute', 'z-50');
+  heart.style.left = Math.random() * window.innerWidth + 'px';
+  heart.style.top = '-50px';
+  heart.style.fontSize = (20 + Math.random() * 20) + 'px';
+  heart.style.opacity = Math.random();
+
+  document.body.appendChild(heart);
+
+  let posY = -50;
+  const speed = 1 + Math.random() * 2;
+  const drift = (Math.random() - 0.5) * 2;
+
+  function animateHeart() {
+    posY += speed;
+    heart.style.top = posY + 'px';
+    heart.style.left = (parseFloat(heart.style.left) + drift) + 'px';
+    heart.style.opacity -= 0.002;
+    if(posY < window.innerHeight && heart.style.opacity > 0){
+      requestAnimationFrame(animateHeart);
+    } else {
+      heart.remove();
+    }
+  }
+  requestAnimationFrame(animateHeart);
+}
+    // Continue → Google Maps
+    continueBtn.addEventListener("click", () => {
+      window.open(CONFIG.mapURL, "_blank");
+    });
+
+    // ====================
+    // Glittering Hearts Canvas
+    // ====================
+    const canvas = document.getElementById('glitter');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Create heart particles
+let particles = [];
+for (let i = 0; i < 50; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    type: Math.random() > 0.5 ? 'heart' : 'sparkle',
+    speed: 1 + Math.random() * 2,
+    size: 20 + Math.random() * 20, // font size
+    speedY: 0.5 + Math.random() * 1.5,
+    drift: (Math.random() - 0.5) * 2,
+    opacity: 0.5 + Math.random() * 0.5
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach(p => {
+    ctx.globalAlpha = p.opacity;
+    ctx.font = `${p.size}px Arial`;
+    if (p.type === 'heart') {
+      ctx.drawImage(heartImg, p.x - 16, p.y - 16, 32, 32);
+    } else {
+      ctx.drawImage(flower, p.x - 8, p.y - 8, 16, 16);
+    }
+
+    p.y -= p.speedY;
+    p.x += p.drift;
+
+    if (p.y < -50) p.y = canvas.height + 50; // reset to bottom
+    if (p.x < -50) p.x = canvas.width + 50;
+    if (p.x > canvas.width + 50) p.x = -50;
+  });
+
+  requestAnimationFrame(animate);
+}
+
+heartImg.onload = () => {
+
+  animate();
+};
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+const verifyBtnText = "Verify 💖"; // Text to type
+const typingSpan = document.querySelector("#verifyBtn .typing-text");
+
+let charIndex = 0;
+let isDeleting = false;
+let delay = 150; // typing speed
+
+function typeLoop() {
+  if (!isDeleting) {
+    typingSpan.textContent += verifyBtnText.charAt(charIndex);
+    charIndex++;
+    if (charIndex === verifyBtnText.length) {
+      isDeleting = true;
+      delay = 1000; // pause before deleting
+    } else {
+      delay = 150;
+    }
+  } else {
+    typingSpan.textContent = typingSpan.textContent.slice(0, charIndex - 1);
+    charIndex--;
+    if (charIndex === 0) {
+      isDeleting = false;
+      delay = 500; // pause before typing again
+    } else {
+      delay = 100;
+    }
+  }
+  setTimeout(typeLoop, delay);
+}
+
+typeLoop(); 
+  </script>
+</body>
+</html>
